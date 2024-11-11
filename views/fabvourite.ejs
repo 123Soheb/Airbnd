@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/output.css" />
+    <title><%=title%></title>
+  </head>
+  <body>
+    <h1 class="text-4xl font-bold text-center mt-8">Welcome to Airbnb</h1>
+    <div class="flex justify-center">
+      <%-include('./partial/nav')%> <%-include('./partial/home')%>
+    </div>
+    <div class="flex justify-center">
+      <div class="p-4 bg-slate-300 rounded-lg">
+        <h1 class="text-3xl font-bold mb-4 text-gray-900">Homes</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <% home.forEach(home =>{ %>
+          <div class="bg-gray-500 p-4 rounded-lg shadow-md">
+            <img
+              src="<%=home.photurl %>"
+              alt="<%=home.housename %>"
+              class="w-full h-48 object-cover mb-4"
+            />
+            <h2 class="text-lg font-bold mb-2 text-gray-900">
+              <%=home.housename %>
+            </h2>
+            <p class="text-gray-700 mb-2"><%=home.location %></p>
+            <p class="text-gray-700 mb-2"><%=home.rating %></p>
+            <p class="text-gray-700 mb-2">$<%=home.price %></p>
+            <a
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:border-blue-500"
+              href="home/<%=home.id %>"
+            >
+              Details
+            </a>
+          </div>
+          <%})%>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

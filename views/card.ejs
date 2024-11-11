@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/output.css" />
+    <title><%=title%></title>
+  </head>
+  <body class="bg-gray-500 h-screen">
+    <h1 class="text-3xl font-bold mb-4 text-center">Add a new home</h1>
+    <%-include('./partial/home')%>
+    <div class="max-w-md p-4 bg-white rounded-lg ml-auto mr-auto shadow-md">
+      <h1 class="text-3xl font-bold mb-4">Add a new home</h1>
+      <form action="/host/add-home" method="POST">
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="housename"
+            >housename</label
+          >
+          <input
+            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            id="housename"
+            type="text"
+            name="housename"
+            placeholder="Enter home name"
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="location"
+            >Location</label
+          >
+          <input
+            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            id="location"
+            type="text"
+            name="location"
+            placeholder="Enter location"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="rating"
+            >Rating</label
+          >
+          <input
+            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            id="rating"
+            name="rating"
+            type="text"
+            placeholder="Enter rating"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="url"
+            >Photo URL</label
+          >
+          <input
+            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            id="url"
+            name="url"
+            type="text"
+            placeholder="Enter photo URL"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2"
+            >Price</label
+          >
+          <input
+            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+            id="Price"
+            name="Price"
+            type="number"
+            placeholder="Enter photo URL"
+          />
+        </div>
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          type="submit"
+        >
+          Add Home
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
