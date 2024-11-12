@@ -16,7 +16,7 @@ app.set("view engine", "ejs");
 app.set("views","views");
 
 app.use(routerhost);
-app.use(routeradd);
+app.use("/host",routeradd);
 
 app.use( (req,res,next)=>{
   res.statusCode =404;

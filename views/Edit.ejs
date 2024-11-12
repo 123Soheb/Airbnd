@@ -7,11 +7,16 @@
     <title><%=title%></title>
   </head>
   <body class="bg-gray-500 h-screen">
-    <h1 class="text-3xl font-bold mb-4 text-center">Add a new home</h1>
+    <h1 class="text-3xl font-bold mb-4 text-center">
+      <%= editing ? "Edit" : "Add"%> a new home
+    </h1>
     <%-include('./partial/home')%>
     <div class="max-w-md p-4 bg-white rounded-lg ml-auto mr-auto shadow-md">
-      <h1 class="text-3xl font-bold mb-4">Add a new home</h1>
-      <form action="/host/add-home" method="POST">
+      <h1 class="text-3xl font-bold mb-4">
+        <%= editing ? "Edit" : "Add"%> a new home
+      </h1>
+      <form action="/host/<%=editing ? "edit-home" : "add-home" %>" method="POST">
+        <input type="hidden" name="id" value="<%= editing ? home.id : ''%>" />
         <div class="mb-4">
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
@@ -21,6 +26,7 @@
           <input
             class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
             id="housename"
+            value="<%=editing ? home.housename : ''%>"
             type="text"
             name="housename"
             placeholder="Enter home name"
@@ -36,6 +42,7 @@
             class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
             id="location"
             type="text"
+            value="<%=editing ? home.location : ''%>"
             name="location"
             placeholder="Enter location"
           />
@@ -48,6 +55,7 @@
             class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
             id="rating"
             name="rating"
+            value="<%=editing ? home.rating : ''%>"
             type="text"
             placeholder="Enter rating"
           />
@@ -60,6 +68,7 @@
             class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
             id="url"
             name="url"
+            value="<%=editing ? home.photurl : ''%>"
             type="text"
             placeholder="Enter photo URL"
           />
@@ -72,6 +81,7 @@
             class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
             id="Price"
             name="Price"
+            value="<%=editing ? home.price : ''%>"
             type="number"
             placeholder="Enter photo URL"
           />
@@ -80,7 +90,7 @@
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           type="submit"
         >
-          Add Home
+          <%=editing ? "Update" : "Add"%> Home
         </button>
       </form>
     </div>

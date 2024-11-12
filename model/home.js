@@ -17,14 +17,19 @@ module.exports= class Register{
 
   }
   save(callback){
-    this.id = Math.random().toString();
     Register.fetch(home =>{
-      home.push(this);
+      if(this.id){
+        home = home.map(home => home.id === this.id ? this : home);
+        console.log(this.id);
+
+      }else{
+        this.id = Math.random().toString();
+        home.push(this);
+
+      }
       // console.log(home);
     fs.writeFile(homfilepath, JSON.stringify(home), callback);
     })
-    
-
   }
   static fetch(callback){
     fs.readFile(homfilepath, (error,data)=>{
