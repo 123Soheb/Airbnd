@@ -26,11 +26,18 @@
             </h2>
 
             <a
-              href="/host/host-home/<%=home.id%>?editing=true"
+              href="/host/host-home/<%=home._id%>?editing=true"
               class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:border-blue-500"
             >
               Edit
             </a>
+            <form action="/host/host-delete/<%=home._id%>" method="POST">
+              <button
+                class="bg-red-500 hover:bg-red-700 mt-5 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:border-blue-500"
+              >
+                Deleted
+              </button>
+            </form>
           </div>
           <%})%>
         </div>

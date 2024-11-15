@@ -26,6 +26,13 @@ module.exports= class favourite{
         fs.writeFile(favouritefile, JSON.stringify(fab), callback);
       });
     };
+
+  static removefavourite(id,callback){
+    favourite.fetch(fab => {
+      const filterhome = fab.filter(home => home._id !== id);
+      fs.writeFile(favouritefile, JSON.stringify(filterhome), callback);
+    });
+  }
   
 
 }

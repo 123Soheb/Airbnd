@@ -4,10 +4,14 @@ const {routeradd} = require("./Router/host/hostadd");
 const bodyParser = require("body-parser");
 const path = require("path");
 const rootDir = require("./util/path");
+const {mongoConnect} = require("./util/database");
+
 
 
 
 const app= express();
+
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, "public")));
@@ -28,6 +32,9 @@ app.use( (req,res,next)=>{
 
 
 const PORT=3000;
-app.listen(PORT, ()=>{
-  console.log(`http://localhost:${PORT}`);
-})
+mongoConnect((client) =>{
+  console.log("connected");
+  app.listen(PORT, ()=>{
+    console.log(`http://localhost:${PORT}`);
+  })
+});

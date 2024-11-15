@@ -2,20 +2,20 @@ const favourite = require("../model/favourite");
 const Register =require("./../model/home")
 
 exports.getdetail=(req,res,next)=>{
-  Register.fetch(home =>{
+  Register.fetch().then(home =>{
     res.render("index",{home:home,title:"Home"});
   });
  
 }
 exports.gethome=(req,res,next)=>{
-  Register.fetch(home =>{
+  Register.fetch().then(home =>{
     res.render("home",{home:home,title:"Home"});
   });
  
 }
 exports.getid=(req,res,next)=>{
   const id=req.params.homeid;
-  Register.findById(id,homeid =>{
+  Register.findById(id).then(homeid =>{
      if(!homeid){
        return res.redirect("/");
      }
@@ -39,6 +39,17 @@ exports.getfabvourite=(req,res,next)=>{
 exports.postfabvourite=(req,res,next)=>{
   const id=req.body;
   favourite.addfavourite(id,(error)=>{
+    if(error){
+      console.log(error);
+    }
+    console.log("done");
+  });
+  res.redirect("/fabvourite");
+}
+
+exports.postfabremove=(req,res,next)=>{
+  const id=req.params.homeid;
+  favourite.removefavourite(id,(error)=>{
     if(error){
       console.log(error);
     }
