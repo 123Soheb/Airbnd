@@ -1,13 +1,11 @@
-const path =require("path");
-const fs =require("fs");
-const rootdir =require("./../util/path");
+
 const favourite = require("./favourite");
 const { getDb } = require("../util/database");
 const { ObjectId } = require("mongodb");
 const e = require("express");
 
 
-const homfilepath=path.join(rootdir, "data", "homes.json");
+
 
 
 module.exports= class Register{
@@ -58,13 +56,10 @@ module.exports= class Register{
     }).catch(err => console.log(err));
    
   }
+
   static deleteById(homeId) {
     const db=getDb();
-    return db.collection("homes").deleteOne({_id : new ObjectId(String(homeId))})
-    .then(home => {
-      console.log(home);
-      return home 
-    }).catch(err => console.log(err));
+    return db.collection("homes").deleteOne({_id : new ObjectId(String(homeId))});
  
 
 }

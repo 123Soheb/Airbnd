@@ -25,9 +25,12 @@ exports.getid=(req,res,next)=>{
   
 }
 exports.getfabvourite=(req,res,next)=>{
-  favourite.fetch(fabhome =>{
-    Register.fetch(home =>{
-      const filterhome = home.filter(({ id }) => fabhome.some(fab => fab.id === id));
+  favourite.fetch().then(fabhome =>{
+    console.log(fabhome);
+    Register.fetch().then(home =>{
+      fabhome= fabhome.map(fabid => fabid.homeId);
+    
+      const filterhome = home.filter(( home ) => fabhome.includes(home._id.toString()));
    
       res.render("fabvourite",{home:filterhome,title:"Fabvourite"});
     });
@@ -37,23 +40,18 @@ exports.getfabvourite=(req,res,next)=>{
  
 }
 exports.postfabvourite=(req,res,next)=>{
-  const id=req.body;
-  favourite.addfavourite(id,(error)=>{
-    if(error){
-      console.log(error);
-    }
-    console.log("done");
-  });
-  res.redirect("/fabvourite");
+  const id=req.body.id;
+  const fav =new favourite(id);
+  fav.save().then(result =>{
+    console.log(result, id, fav);
+    res.redirect("/fabvourite");
+  }).catch(err => console.log(err));
 }
 
 exports.postfabremove=(req,res,next)=>{
   const id=req.params.homeid;
-  favourite.removefavourite(id,(error)=>{
-    if(error){
-      console.log(error);
-    }
-    console.log("done");
-  });
-  res.redirect("/fabvourite");
-}
+  favourite.removefavourite(id).then(()  =>{
+    res.redirect("/fabvourite");}
+
+  )}
+ 
