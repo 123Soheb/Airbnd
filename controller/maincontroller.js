@@ -1,56 +1,61 @@
 const favourite = require("../model/favourite");
-const Register =require("./../model/home")
+const Home =require("./../model/home")
 
 exports.getdetail=(req,res,next)=>{
-  Register.fetch().then(home =>{
-    res.render("index",{home:home,title:"Home"});
+  Home.find().then(home =>{
+    res.render("index",{home:home,title:"Home",  isLoggedIn: req.isLoggedIn,});
   });
  
 }
 exports.gethome=(req,res,next)=>{
-  Register.fetch().then(home =>{
-    res.render("home",{home:home,title:"Home"});
+  Home.find().then(home =>{
+    res.render("home",{home:home,title:"Home" , isLoggedIn: req.isLoggedIn,});
   });
  
 }
 exports.getid=(req,res,next)=>{
   const id=req.params.homeid;
-  Register.findById(id).then(homeid =>{
+  Home.findById(id).then(homeid =>{
      if(!homeid){
        return res.redirect("/");
      }
-    res.render("homedetails",{home:homeid,title:"Home choose"});
+    res.render("homedetails",{home:homeid, title:"Home choose",  isLoggedIn: req.isLoggedIn,});
   })
 
   
 }
 exports.getfabvourite=(req,res,next)=>{
-  favourite.fetch().then(fabhome =>{
+  favourite.find().populate("homeId").then(fabhome =>{
     console.log(fabhome);
-    Register.fetch().then(home =>{
-      fabhome= fabhome.map(fabid => fabid.homeId);
+    fabhome= fabhome.map(fabid => fabid.homeId);
     
-      const filterhome = home.filter(( home ) => fabhome.includes(home._id.toString()));
    
-      res.render("fabvourite",{home:filterhome,title:"Fabvourite"});
+      res.render("fabvourite",{home:fabhome, title:"Fabvourite",  isLoggedIn: req.isLoggedIn,});
     });
     
-  })
   
  
 }
 exports.postfabvourite=(req,res,next)=>{
-  const id=req.body.id;
-  const fav =new favourite(id);
-  fav.save().then(result =>{
-    console.log(result, id, fav);
-    res.redirect("/fabvourite");
-  }).catch(err => console.log(err));
+  const homeId=req.body.id;
+  console.log(homeId);
+  favourite.findOne({homeId}).then(existfavid =>{
+    if(existfavid){
+      return res.redirect("/fabvourite");
+    }
+     const fav =new favourite({homeId});
+    fav.save().then(result =>{
+      res.redirect("/fabvourite");
+    });
+   
+  }
+  )
 }
+ 
 
 exports.postfabremove=(req,res,next)=>{
-  const id=req.params.homeid;
-  favourite.removefavourite(id).then(()  =>{
+  const homeId=req.params.homeid;
+  favourite.findOneAndDelete({homeId}).then(()  =>{
     res.redirect("/fabvourite");}
 
   )}

@@ -6,11 +6,14 @@
     <link rel="stylesheet" href="/styles/output.css" />
     <title><%=title%></title>
   </head>
-  <body class="bg-gray-500 h-screen">
+  <body >
+    <% const isLoggedIn = true; %>
+    <%-include('./partial/nav')%>
     <h1 class="text-3xl font-bold mb-4 text-center">
       <%= editing ? "Edit" : "Add"%> a new home
     </h1>
-    <%-include('./partial/home')%>
+    
+   
     <div class="max-w-md p-4 bg-white rounded-lg ml-auto mr-auto shadow-md">
       <h1 class="text-3xl font-bold mb-4">
         <%= editing ? "Edit" : "Add"%> a new home
@@ -53,7 +56,7 @@
           >
           <input
             class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
-            id="rating"
+          
             name="rating"
             value="<%=editing ? home.rating : ''%>"
             type="text"
@@ -61,13 +64,13 @@
           />
         </div>
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="url"
+          <label class="block text-gray-700 text-sm font-bold mb-2" 
             >Photo URL</label
           >
           <input
             class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
-            id="url"
-            name="url"
+            id="photurl"
+            name="photurl"
             value="<%=editing ? home.photurl : ''%>"
             type="text"
             placeholder="Enter photo URL"
@@ -75,12 +78,12 @@
         </div>
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2"
-            >Price</label
+            >price</label
           >
           <input
             class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
-            id="Price"
-            name="Price"
+            id="price"
+            name="price"
             value="<%=editing ? home.price : ''%>"
             type="number"
             placeholder="Enter photo URL"
@@ -89,7 +92,6 @@
             >Discription</label>
           <textarea
           class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight"
-          id="Price"
           name="discription"
           value="<%=editing ? home.discription : ''%>"
           type="number"

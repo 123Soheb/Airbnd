@@ -8,9 +8,8 @@
   </head>
   <body>
     <h1 class="text-4xl font-bold text-center mt-8">Welcome to Airbnb</h1>
-    <div class="flex justify-center">
-      <%-include('./partial/nav')%> <%-include('./partial/home')%>
-    </div>
+    <%-include('./partial/nav')%>
+    <div class="flex justify-center"></div>
     <div class="flex justify-center">
       <div class="p-4 bg-slate-300 rounded-lg">
         <h1 class="text-3xl font-bold mb-4 text-gray-900">Homes</h1>
@@ -34,7 +33,7 @@
             >
               Details
             </a>
-            <%- include('./partial/fabpartial',{home:home})%>
+            <%-include('./partial/fabpartial',{home:home })%>
           </div>
           <%})%>
         </div>

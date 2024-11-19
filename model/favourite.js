@@ -1,40 +1,19 @@
-const { ObjectId } = require("mongodb");
-const { getDb } = require("../util/database");
+const { MongoDriverError } = require("mongodb");
+const mongoose = require("mongoose");
+
+
+const FavouriteSchema = mongoose.Schema({
+  homeId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "home",
+    unique: true,
+  },
+ 
+});
 
 
 
-
-module.exports= class favourite{
-  constructor(homeId){
-      this.homeId=homeId;
-  }
+module.exports = mongoose.model("favourite", FavouriteSchema);
 
 
-  save(){
-    const db =getDb(); 
-    return db.collection("favourite").findOne({homeId : this.homeId})
-    .then(existingfav => {
-      if(!existingfav){
-        return db.collection("favourite").insertOne(this); 
-      }else{
-        return Promise.resolve();
-      }
-    });
-  }
-
-
-  static fetch(){
-    const db=getDb();
-    return db.collection("favourite").find().toArray();
-    
-  }
-
-
-  static removefavourite(homeId){
-    const db=getDb();
-    return db.collection("favourite").deleteOne({homeId : homeId});
-    
-  }
-  
-
-}

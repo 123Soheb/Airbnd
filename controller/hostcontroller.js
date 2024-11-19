@@ -1,15 +1,15 @@
-const Register =require("./../model/home")
+const Home =require("./../model/home")
 exports.getadd=(req,res,next)=>{
   console.log(req.url,req.method,req.body);
-  res.render("Edit",{title:"Add data",editing: false});
+  res.render("Edit",{title:"Add data", editing: false,  isLoggedIn: req.isLoggedIn,});
 
 };
 
 
 exports.postadd=(req,res,next)=>{
-  const {housename,location,rating,url,Price,discription}=req.body;
-  console.log(housename,location,rating,url,Price);
-  const newresister = new Register(housename,location,rating,url,Price,discription);
+  const {housename,location,rating,photurl,price,discription}=req.body;
+  console.log(housename,location,rating,photurl,price,discription);
+  const newresister = new Home({housename,location,rating,photurl,price,discription});
   newresister.save().then((result)=>{
   
     res.redirect("/host/host-home");  
@@ -19,8 +19,8 @@ exports.postadd=(req,res,next)=>{
 }
 
 exports.gethosthome =(req,res,next)=>{
-  Register.fetch().then(home=>{
-    res.render("home-added",{home:home,title:"Host home"});  
+  Home.find().then(home=>{
+    res.render("home-added",{home:home,title:"Host home" , isLoggedIn: req.isLoggedIn});  
   })
 }
 
@@ -35,7 +35,7 @@ exports.gethosthomeid=(req,res,next)=>{
     return res.redirect("/host/host-homes");
   }
 
-  Register.findById(id).then((home) => {
+  Home.findById(id).then((home) => {
     if (!home) {
       console.log("Home not found for editing");
       return res.redirect("/host/host-homes");
@@ -46,25 +46,32 @@ exports.gethosthomeid=(req,res,next)=>{
       home: home,
       editing: editing,
       title: "Edit Your Home",
+      isLoggedIn: req.isLoggedIn,
     });
   });
 };
 
 exports.posthosthomeedit=(req,res,next)=>{
  
-  const {id,housename,location,rating,url,Price,discription}=req.body;
-  const newresister = new Register(housename,location,rating,url,Price,discription,id);
-  newresister.save().then((error)=>{
-    if(error){
-      console.log(error);
-    }
-    res.render("succeful",{title:"successful data"});
-  });
+  const {id,housename,location,rating,photurl,price,discription}=req.body;
+  console.log(id,housename,location,rating,photurl,price,discription);
+  Home.findById(id).then((home)=>{
+    home.housename=housename;
+    home.location=location;
+    home.rating=rating;
+    home.photurl=photurl;
+    home.price=price;
+    home.discription=discription;
+    return home.save();
+  }).then((result)=>{
+    res.redirect("/host/host-home");
+  })
+  
 }
 
 exports.posthomedelete=(req,res,next)=>{
   const id=req.params.homeid;
-  Register.deleteById(id).then(()=>{
+  Home.findByIdAndDelete(id).then(()=>{
    
       res.redirect("/host/host-home");
   })
