@@ -3,13 +3,13 @@ const Home =require("./../model/home")
 
 exports.getdetail=(req,res,next)=>{
   Home.find().then(home =>{
-    res.render("index",{home:home,title:"Home",  isLoggedIn: req.isLoggedIn,});
+    res.render("index",{home:home,title:"Home",  isLoggedIn: req.session.isLoggedIn,});
   });
  
 }
 exports.gethome=(req,res,next)=>{
   Home.find().then(home =>{
-    res.render("home",{home:home,title:"Home" , isLoggedIn: req.isLoggedIn,});
+    res.render("home",{home:home,title:"Home" , isLoggedIn: req.session.isLoggedIn,});
   });
  
 }
@@ -19,7 +19,7 @@ exports.getid=(req,res,next)=>{
      if(!homeid){
        return res.redirect("/");
      }
-    res.render("homedetails",{home:homeid, title:"Home choose",  isLoggedIn: req.isLoggedIn,});
+    res.render("homedetails",{home:homeid, title:"Home choose",  isLoggedIn: req.session.isLoggedIn,});
   })
 
   
@@ -30,7 +30,7 @@ exports.getfabvourite=(req,res,next)=>{
     fabhome= fabhome.map(fabid => fabid.homeId);
     
    
-      res.render("fabvourite",{home:fabhome, title:"Fabvourite",  isLoggedIn: req.isLoggedIn,});
+      res.render("fabvourite",{home:fabhome, title:"Fabvourite",  isLoggedIn: req.session.isLoggedIn,});
     });
     
   

@@ -29,12 +29,29 @@
       href="/host/host-home"
       >Home Edit</a
     >
-    <% } %>
-
+    <% } %> <% if(isLoggedIn){ %>
+    <form action="/logout" method="POST">
+      <input
+        type="submit"
+        value="Logout"
+        style="position: absolute; right: 0; top: 0; margin: 10px"
+        class="absolute right-0 top-0 text-white bg-red-500 hover:text-red-700 m-5 px-4 py-2 rounded-lg inline-block"
+      />
+    </form>
+    <% } else { %>
     <a
+      style="position: absolute; right: 0; top: 0; margin: 10px"
+      class="text-white bg-blue-500 hover:text-blue-700 m-5 px-4 py-2 rounded-lg inline-block"
+      href="/signup"
+      >Signup
+    </a>
+    <a
+      style="position: absolute; right: 90px; top: 0; margin: 10px"
       class="text-white bg-blue-500 hover:text-blue-700 m-5 px-4 py-2 rounded-lg inline-block"
       href="/login"
       >Login
     </a>
+
+    <% } %>
   </center>
 </header>

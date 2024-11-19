@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const rootDir = require("./util/path");
 const authrouter = require("./Router/authRouter");
+const session = require("express-session");
+const MongoDB_session = require("connect-mongodb-session");
+
 
 const mongoose = require("mongoose");
 
@@ -14,21 +17,34 @@ const mongoose = require("mongoose");
 const app= express();
 
 
+const url="mongodb+srv://sohebaktar318:Soheb123@airbnddatabase.xnb2s.mongodb.net/airbnd?retryWrites=true&w=majority&appName=Airbnddatabase";
+
+
+
+const MongoDB_Store = MongoDB_session(session);
+
+const store = new MongoDB_Store({
+  uri: url,
+  collection: "sessions"
+})
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, "public")));
 
+app.use(session({
+  secret: "khan soheb akhtar",
+  resave: false,
+  saveUninitialized: true,
+  store:store
+}))
 
-app.use((req, res, next) => {
-  req.isLoggedIn = req.get("Cookie").split("=")[1] === "true";
-  next();
-})
 
 app.set("view engine", "ejs");
 app.set("views","views");
 
 app.use("/host", (req, res, next) => {
-  if (!req.isLoggedIn) {
+  if (!req.session.isLoggedIn) {
     return res.redirect("/login");
   }
   next();
@@ -40,11 +56,9 @@ app.use(authrouter);
 
 app.use( (req,res,next)=>{
   res.statusCode =404;
-  res.render("404page",{title:"Page Doest not Exit", isLoggedIn: req.isLoggedIn});
+  res.render("404page",{title:"Page Doest not Exit", isLoggedIn: req.session.isLoggedIn});
   });
 
-
-  const url="mongodb+srv://sohebaktar318:Soheb123@airbnddatabase.xnb2s.mongodb.net/airbnd?retryWrites=true&w=majority&appName=Airbnddatabase";
 
 
 
