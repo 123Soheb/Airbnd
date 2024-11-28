@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/output.css" />
+    <title><%=title%></title>
+  </head>
+  <body>
+    <%-include('./partial/nav')%>
+    <form
+      action="/forgot-password"
+      method="POST"
+      class="max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg"
+    >
+      <h2 class="text-2xl font-bold mb-4">Forget Password</h2>
+      <%-include('./partial/errormessage')%>
+      <div class="mb-4">
+        <label
+          for="firstName"
+          class="block text-gray-700 text-sm font-bold mb-2"
+          >G-mail</label
+        >
+        <input
+          type="email"
+          id="firstName"
+          name="email"
+          class="shadow border-2 border-gray-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Forget
+      </button>
+    </form>
+  </body>
+</html>

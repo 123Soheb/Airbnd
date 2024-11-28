@@ -1,7 +1,7 @@
 const Home =require("./../model/home")
 exports.getadd=(req,res,next)=>{
   console.log(req.url,req.method,req.body);
-  res.render("Edit",{title:"Add data", editing: false,  isLoggedIn: req.session.isLoggedIn,});
+  res.render("Edit",{title:"Add data", editing: false,  isLoggedIn: req.session.isLoggedIn, user: req.session.user});
 
 };
 
@@ -9,7 +9,7 @@ exports.getadd=(req,res,next)=>{
 exports.postadd=(req,res,next)=>{
   const {housename,location,rating,photurl,price,discription}=req.body;
   console.log(housename,location,rating,photurl,price,discription);
-  const newresister = new Home({housename,location,rating,photurl,price,discription});
+  const newresister = new Home({housename,location,rating,photurl,price,discription,host:req.session.user._id});
   newresister.save().then((result)=>{
   
     res.redirect("/host/host-home");  
@@ -19,8 +19,8 @@ exports.postadd=(req,res,next)=>{
 }
 
 exports.gethosthome =(req,res,next)=>{
-  Home.find().then(home=>{
-    res.render("home-added",{home:home,title:"Host home" , isLoggedIn: req.session.isLoggedIn});  
+  Home.find({host:req.session.user._id}).then(home=>{
+    res.render("home-added",{home:home,title:"Host home" , isLoggedIn: req.session.isLoggedIn,user: req.session.user});  
   })
 }
 
@@ -47,6 +47,7 @@ exports.gethosthomeid=(req,res,next)=>{
       editing: editing,
       title: "Edit Your Home",
       isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user
     });
   });
 };

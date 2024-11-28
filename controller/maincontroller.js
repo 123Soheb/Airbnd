@@ -1,15 +1,16 @@
-const favourite = require("../model/favourite");
+
+const User = require("../model/user");
 const Home =require("./../model/home")
 
 exports.getdetail=(req,res,next)=>{
   Home.find().then(home =>{
-    res.render("index",{home:home,title:"Home",  isLoggedIn: req.session.isLoggedIn,});
+    res.render("index",{home:home,title:"Home",  isLoggedIn: req.session.isLoggedIn, user: req.session.user});
   });
  
 }
 exports.gethome=(req,res,next)=>{
   Home.find().then(home =>{
-    res.render("home",{home:home,title:"Home" , isLoggedIn: req.session.isLoggedIn,});
+    res.render("home",{home:home,title:"Home" , isLoggedIn: req.session.isLoggedIn, user: req.session.user});
   });
  
 }
@@ -19,44 +20,55 @@ exports.getid=(req,res,next)=>{
      if(!homeid){
        return res.redirect("/");
      }
-    res.render("homedetails",{home:homeid, title:"Home choose",  isLoggedIn: req.session.isLoggedIn,});
+    res.render("homedetails",{home:homeid, title:"Home choose",  isLoggedIn: req.session.isLoggedIn,user: req.session.user});
   })
 
   
 }
-exports.getfabvourite=(req,res,next)=>{
-  favourite.find().populate("homeId").then(fabhome =>{
-    console.log(fabhome);
-    fabhome= fabhome.map(fabid => fabid.homeId);
-    
-   
-      res.render("fabvourite",{home:fabhome, title:"Fabvourite",  isLoggedIn: req.session.isLoggedIn,});
-    });
-    
-  
+exports.getfabvourite=async (req,res,next)=>{
+   const userId=req.session.user._id;
+   try{
+     const user = await User.findById({_id : userId}).populate("favouritesHome");
+     console.log(user);
+     res.render("fabvourite",{home:user.favouritesHome, title:"Fabvourite",  isLoggedIn: req.session.isLoggedIn,user: req.session.user});;
+   }catch(err){
+     console.log(err);
+     
+   }  
  
 }
-exports.postfabvourite=(req,res,next)=>{
+exports.postfabvourite=async (req,res,next)=>{
   const homeId=req.body.id;
-  console.log(homeId);
-  favourite.findOne({homeId}).then(existfavid =>{
-    if(existfavid){
-      return res.redirect("/fabvourite");
-    }
-     const fav =new favourite({homeId});
-    fav.save().then(result =>{
+  const userId=req.session.user._id;
+  try{
+    const user = await User.findOne({_id : userId})
+    if(!user.favouritesHome.includes(homeId)){
+      user.favouritesHome.push(homeId);
+      await user.save();
       res.redirect("/fabvourite");
-    });
-   
+    }else{
+      res.redirect("/fabvourite");
+    }
+
+  }catch(err){
+    console.log(err);
+    res.redirect("/fabvourite");
   }
-  )
+
+  
 }
  
 
 exports.postfabremove=(req,res,next)=>{
   const homeId=req.params.homeid;
-  favourite.findOneAndDelete({homeId}).then(()  =>{
-    res.redirect("/fabvourite");}
-
-  )}
- 
+  const userId=req.session.user._id;
+  User.findById(userId).then(user => {
+    user.favouritesHome=user.favouritesHome.filter(home => home.toString() !== homeId);
+    return user.save(); 
+  }).then(() => {
+    res.redirect("/fabvourite");
+  }).catch(err => {
+    console.log(err);
+    res.redirect("/fabvourite");
+  })
+}
