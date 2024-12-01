@@ -1,6 +1,9 @@
+const path =require("path");
 
 const User = require("../model/user");
 const Home =require("./../model/home")
+
+const rootDir = require("../util/path");
 
 exports.getdetail=(req,res,next)=>{
   Home.find().then(home =>{
@@ -72,3 +75,16 @@ exports.postfabremove=(req,res,next)=>{
     res.redirect("/fabvourite");
   })
 }
+
+
+exports.getrules=(req,res,next)=>{
+  // const id=req.params.homeid;
+  // console.log(id);
+  const rulesFiles ="Airbnb-Rules.pdf";
+  const filePath=path.join(rootDir,"rules",rulesFiles);
+  // res.sendFile(filePath);
+  res.download(filePath, "Rules.pdf");
+
+
+
+ }

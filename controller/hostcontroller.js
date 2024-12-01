@@ -1,3 +1,4 @@
+const { deleteFile } = require("../util/file");
 const Home =require("./../model/home")
 exports.getadd=(req,res,next)=>{
   console.log(req.url,req.method,req.body);
@@ -7,8 +8,15 @@ exports.getadd=(req,res,next)=>{
 
 
 exports.postadd=(req,res,next)=>{
-  const {housename,location,rating,photurl,price,discription}=req.body;
-  console.log(housename,location,rating,photurl,price,discription);
+  const {housename,location,rating,price,discription}=req.body;
+  console.log('Req body: ', req.body);
+  console.log('House Photo: ', req.file);
+  console.log(req.file.path)
+  if (!req.file) {
+    console.log("No file uploaded");
+    return res.status(400).send("No file uploaded");
+  }
+  const photurl ="/" + req.file.path;
   const newresister = new Home({housename,location,rating,photurl,price,discription,host:req.session.user._id});
   newresister.save().then((result)=>{
   
@@ -53,14 +61,22 @@ exports.gethosthomeid=(req,res,next)=>{
 };
 
 exports.posthosthomeedit=(req,res,next)=>{
+  console.log('Req body: ', req.body);
+  console.log('House Photo: ', req.file);
  
   const {id,housename,location,rating,photurl,price,discription}=req.body;
   console.log(id,housename,location,rating,photurl,price,discription);
   Home.findById(id).then((home)=>{
+    if(!home){
+      return res.redirect("/host/host-home");
+    }
     home.housename=housename;
     home.location=location;
     home.rating=rating;
-    home.photurl=photurl;
+    if(req.file){
+      deleteFile(home.photurl.substring(1));
+      home.photurl="/"+req.file.path;
+    }
     home.price=price;
     home.discription=discription;
     return home.save();

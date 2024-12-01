@@ -7,6 +7,7 @@ const rootDir = require("./util/path");
 const authrouter = require("./Router/authRouter");
 const session = require("express-session");
 const MongoDB_session = require("connect-mongodb-session");
+const multer = require("multer");
 
 
 const mongoose = require("mongoose");
@@ -15,7 +16,6 @@ const mongoose = require("mongoose");
 
 
 const app= express();
-
 
 const url="mongodb+srv://sohebaktar318:Soheb123@airbnddatabase.xnb2s.mongodb.net/airbnd?retryWrites=true&w=majority&appName=Airbnddatabase";
 
@@ -29,8 +29,41 @@ const store = new MongoDB_Store({
 })
 
 
-app.use(bodyParser.urlencoded({ extended: true }));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads/');
+  },
+  filename: (req, file, cb) => {
+    const fileName = file.originalname;
+    console.log(`Saving file to: ${req.destination}/${fileName}`);
+    cb(null, fileName);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+
+
+app.use(multer({storage,fileFilter}).single("photo"));
+
+
 app.use(express.static(path.join(rootDir, "public")));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use("/uploads",express.static(path.join(rootDir, "uploads")));
+
+
 
 app.use(session({
   secret: "khan soheb akhtar",

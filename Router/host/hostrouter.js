@@ -8,5 +8,6 @@ routerhost.get("/home/:homeid",maincontroller.getid);
 routerhost.get("/fabvourite",maincontroller.getfabvourite);
 routerhost.post("/getfabvourite",maincontroller.postfabvourite);
 routerhost.post("/favourite-remove/:homeid",maincontroller.postfabremove);
+routerhost.get("/rules/:homeid",maincontroller.getrules);
 
 module.exports =routerhost;
